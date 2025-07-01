@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Form Pendaftaran Pemain Liga Surabaya 2025</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/6/6d/Soccer_field_-_empty.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      color: white;
+    }
+    .form-container {
+      background: rgba(0, 0, 0, 0.8);
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #00d9ff;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      margin-top: 5px;
+    }
+    input[type="file"] {
+      background: white;
+      color: black;
+    }
+    button {
+      background: #00aaff;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      width: 100%;
+      margin-top: 25px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #007acc;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Pendaftaran Pemain Liga Surabaya 2025</h2>
+    <form id="formPendaftaran">
+      <label>Nama Lengkap</label>
+      <input type="text" name="nama" required />
+      <label>Tempat Lahir</label>
+      <input type="text" name="tempat_lahir" pattern="[A-Za-z\s]+" title="Hanya huruf diperbolehkan" required />
+      <label>Tanggal Lahir</label>
+      <input type="date" name="tanggal_lahir" required />
+      <label>NIK (16 digit)</label>
+      <input type="text" name="nik" pattern="\d{16}" maxlength="16" required />
+      <label>NISN (10 digit)</label>
+      <input type="text" name="nisn" pattern="\d{10}" maxlength="10" required />
+      <label>Klub/SSB</label>
+      <select name="klub" required><option value="">Memuat data klub...</option></select>
+      <label>No Punggung</label>
+      <select name="no_punggung" required><option value="">Pilih nomor</option></select>
+      <label>Upload Rapor</label>
+      <input type="file" name="rapor" accept="image/*" required />
+      <label>Upload KK</label>
+      <input type="file" name="kk" accept="image/*" required />
+      <label>Upload Ijazah</label>
+      <input type="file" name="ijazah" accept="image/*" required />
+      <label>Upload Akte</label>
+      <input type="file" name="akte" accept="image/*" required />
+      <label>Upload Kartu NISN</label>
+      <input type="file" name="kartu_nisn" accept="image/*" required />
+      <label>Upload Kartu Pemain</label>
+      <input type="file" name="kartu_pemain" accept="image/*" required />
+      <label>Upload Foto Pemain</label>
+      <input type="file" name="foto_pemain" accept="image/*" required />
+      <label>Nomor WA</label>
+      <input type="tel" name="wa" pattern="08\d{8,11}" required />
+      <button type="submit">Kirim Pendaftaran</button>
+    </form>
+  </div>
+  <script>
+    const noPunggung = document.querySelector('select[name="no_punggung"]');
+    for (let i = 1; i <= 99; i++) {
+      const opt = document.createElement('option');
+      opt.value = opt.textContent = i;
+      noPunggung.appendChild(opt);
+    }
+    const klubDropdown = document.querySelector('select[name="klub"]');
+    fetch("https://script.google.com/macros/s/AKfycbXXXXXX/exec")
+      .then(res => res.json())
+      .then(data => {
+        klubDropdown.innerHTML = '<option value="">Pilih Klub/SSB</option>';
+        data.sort().forEach(nama => {
+          const opt = document.createElement("option");
+          opt.value = nama;
+          opt.textContent = nama;
+          klubDropdown.appendChild(opt);
+        });
+      })
+      .catch(err => {
+        klubDropdown.innerHTML = '<option value="">Gagal muat klub</option>';
+        console.error(err);
+      });
+
+    document.getElementById("formPendaftaran").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const data = {
+        nama: formData.get("nama"),
+        tempat_lahir: formData.get("tempat_lahir"),
+        tanggal_lahir: formData.get("tanggal_lahir"),
+        nik: formData.get("nik"),
+        nisn: formData.get("nisn"),
+        klub: formData.get("klub"),
+        no_punggung: formData.get("no_punggung"),
+        wa: formData.get("wa")
+      };
+      fetch("https://script.google.com/macros/s/AKfycbXXXXXX/exec", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.text())
+      .then(result => {
+        alert("Pendaftaran berhasil!");
+        form.reset();
+      })
+      .catch(err => {
+        alert("Gagal mengirim data.");
+        console.error(err);
+      });
+    });
+  </script>
+</body>
+</html>
