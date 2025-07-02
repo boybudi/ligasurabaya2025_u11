@@ -82,10 +82,10 @@
       <input type="date" name="tanggal_lahir" required />
 
       <label>NIK (16 digit)</label>
-      <input type="text" name="nik" required pattern="\\d{16}" title="Harus 16 digit angka" />
+      <input type="text" name="nik" required pattern="\d{16}" title="Harus 16 digit angka" />
 
       <label>NISN (10 digit)</label>
-      <input type="text" name="nisn" required pattern="\\d{10}" title="Harus 10 digit angka" />
+      <input type="text" name="nisn" required pattern="\d{10}" title="Harus 10 digit angka" />
 
       <label>Nama Klub / SSB</label>
       <select name="klub" required>
@@ -94,18 +94,25 @@
         <option>SSB Surabaya United</option>
         <option>SSB Bhayangkara</option>
         <option>SSB Berlian</option>
-        <!-- Tambahkan dari tabel jika perlu -->
+        <!-- Tambahkan dari spreadsheet jika perlu -->
       </select>
 
       <label>Nomor Punggung</label>
       <select name="nopung" required>
         <option value="">Pilih Nomor</option>
         <!-- Dropdown 1-99 -->
-        ${Array.from({ length: 99 }, (_, i) => `<option value="${i + 1}">${i + 1}</option>`).join('')}
+        <!-- Isi manual untuk valid HTML -->
+        <!-- Bisa di-generate dengan bantuan script juga -->
+        <!-- Ini contoh untuk 1-10 saja, tinggal lanjut sampai 99 -->
+        <script>
+          document.write(
+            Array.from({ length: 99 }, (_, i) => `<option>${i + 1}</option>`).join("")
+          );
+        </script>
       </select>
 
       <label>Nomor WA (format 08...)</label>
-      <input type="text" name="wa" required pattern="08\\d{8,13}" title="Gunakan format 08xxxxxxxxxx" />
+      <input type="text" name="wa" required pattern="08\d{8,13}" title="Gunakan format 08xxxxxxxxxx" />
 
       <label>Upload Rapor</label>
       <input type="file" name="rapor" />
